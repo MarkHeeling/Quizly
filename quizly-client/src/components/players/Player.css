@@ -1,0 +1,63 @@
+.add-player > form {
+  display: flex;
+  width: 100%;
+}
+
+.add-player {
+  margin-bottom: 1em;
+}
+
+.player-wrapper {
+  border: solid 2px #343C74;
+  border-radius: 10px;
+}
+
+.player-wrapper:empty {
+  border: none
+}
+
+.player-wrapper > div:first-of-type {
+  border-radius: 25px 25px 0 0;
+}
+
+.player-wrapper > div:last-of-type {
+  border-radius: 0 0 25px 25px;
+  border: none;
+}
+
+.player {
+  border-bottom: solid 1px #343C74;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.player-name {
+  display: flex;
+  align-items: center;
+}
+
+.add-button {
+  border: none;
+  background: #3cc528;
+  border-radius: 0 25px 25px 0;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 9px;
+}
+
+.delete-button {
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+}
+
+.delete-icon {
+  color: #F52237;
+  width: 25px;
+  height: auto;
+}

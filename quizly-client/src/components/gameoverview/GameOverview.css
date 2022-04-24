@@ -1,0 +1,62 @@
+.gameoverview {
+  width: 66%;
+}
+
+.categories {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px 20px;
+  overflow: scroll;
+  max-height: 380px;
+}
+
+.category {
+  flex-grow: 1;
+  border: solid 2px #1b1f3b;
+  background: #1b1f3b;
+  border-radius: 25px;
+  min-height: 170px;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.selected {
+  border: solid 2px #ff5768;
+  background: #ff5768;
+}
+
+.category-image {
+  background: white;
+  height: 68px;
+  border-radius: 15px 15px 0 0;
+  margin: 6px;
+  height: 80%;
+}
+
+.category-name {
+  padding: 0px 10px 5px 10px;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  height: 20%;
+}
+
+.react-tabs__tab-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 1.5rem;
+  color: black;
+  border-radius: 25px;
+  padding: 10px;
+}
+
+.react-tabs__tab--selected {
+  background: #ff5768;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 25px;
+}

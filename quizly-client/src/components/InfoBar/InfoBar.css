@@ -1,0 +1,34 @@
+.infobar {
+  display: flex;
+  width: 100%;
+}
+
+.infobar-items {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.return-arrow {
+  justify-content: left;
+}
+
+.correct-answers {
+  justify-content: right;
+}
+
+.correct-answers > div {
+  display: flex;
+  background: #3CC528;
+  border-radius: 25px;
+  padding: 4px 15px;
+  width: 40px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.playername {
+  font-size: 36px;
+}

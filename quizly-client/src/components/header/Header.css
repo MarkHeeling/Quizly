@@ -1,0 +1,34 @@
+.header {
+  display: flex;
+  width: 100%;
+  border-bottom: solid white 2px;
+}
+
+header a {
+  color: #fff;
+}
+
+.header-items {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+nav.header-items {
+  justify-content: left;
+}
+
+ul.header-items {
+  justify-content: right;
+}
+
+.logo-header {
+  font-size: 2rem;
+}
+
+.menu-login {
+  background: #374df6;
+  border: solid;
+}
