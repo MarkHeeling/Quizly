@@ -21,5 +21,5 @@ export async function updateUser(id, data) {
 }
 
 export async function deleteUser(id) {
-  return await axiosClient.delete(`/users/${id}`);
+  return await axiosClient.delete(`/user/deleteUser/${id}`);
 }

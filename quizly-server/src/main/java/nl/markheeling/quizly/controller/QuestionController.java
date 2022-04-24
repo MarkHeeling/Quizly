@@ -1,5 +1,6 @@
 package nl.markheeling.quizly.controller;
 
+import nl.markheeling.quizly.exception.ResourceNotFoundException;
 import nl.markheeling.quizly.model.Question;
 import nl.markheeling.quizly.payload.ApiResponse;
 import nl.markheeling.quizly.payload.CreateQuestionRequest;
@@ -10,7 +11,9 @@ import nl.markheeling.quizly.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +35,12 @@ public class QuestionController {
         @PreAuthorize("hasRole('USER')")
         public List<Question> getQuestions() {
                 return questionRepository.findAll();
+        } 
+
+        @GetMapping("/{id}")
+        public Question getQuestion(@PathVariable(value = "id") Long id) {
+                return questionRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
         }
 
         @PostMapping("/newQuestion")
@@ -47,5 +56,16 @@ public class QuestionController {
                                 .buildAndExpand(newQuestion.getId()).toUri();
 
                 return ResponseEntity.created(location).body(new ApiResponse(true, "Question saved successfully"));
+        }
+
+        @DeleteMapping("/deleteQuestion/{id}")
+        @PreAuthorize("hasRole('USER')")
+        public ResponseEntity<?> deleteQuestion(@PathVariable(value = "id") Long id) {
+                Question question = questionRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
+
+                questionRepository.delete(question);
+
+                return ResponseEntity.ok().body(new ApiResponse(true, "Question deleted successfully"));
         }
 }
