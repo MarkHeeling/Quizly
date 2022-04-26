@@ -23,6 +23,7 @@ button {
   color: white;
   font-weight: bold;
   font-size: 16px;
+  text-align: center;
 }
 
 input {
@@ -68,6 +69,7 @@ a {
 }
 
 select {
+  background: white;
   border: none;
   margin: 10px;
   width: 100%;

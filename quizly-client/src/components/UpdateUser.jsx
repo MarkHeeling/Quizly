@@ -28,7 +28,7 @@ export default function UpdateUser({ userId }) {
   }, [user, reset]);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
   };
 
   return (

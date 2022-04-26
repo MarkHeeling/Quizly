@@ -18,38 +18,38 @@ export default function Question({ questions, correctAnswers }) {
   const [answerStyling, setAnswerStyling] = useState(null);
   const [timerPercentage, setTimerPercentage] = useState(100);
   const [disableTimer, setDisableTimer] = useState(false);
-  const [currentPlayer, setCurrentPlayer] = useState("");
+  const [currentPlayer, setCurrentPlayer] = useState("Speler");
 
   useEffect(() => {
-    setCurrentPlayer(players[0].name) 
+    setCurrentPlayer(players[0].name);
   }, []);
 
-  // useEffect(() => {
-  //   const nextQuestion = currentQuestion + 1;
+  useEffect(() => {
+    const nextQuestion = currentQuestion + 1;
 
-  //   if (timerPercentage > 0 && !disableTimer) {
-  //     setTimeout(
-  //       () => setTimerPercentage(timerPercentage - 1),
-  //       timePerQuestion * 10
-  //     );
-  //   } else if (!disableTimer && timerPercentage === 0) {
-  //     setWrongAnswer(true);
-  //     setDisableQuestions(true);
+    if (timerPercentage > 0 && !disableTimer) {
+      setTimeout(
+        () => setTimerPercentage(timerPercentage - 1),
+        timePerQuestion * 10
+      );
+    } else if (!disableTimer && timerPercentage === 0) {
+      setWrongAnswer(true);
+      setDisableQuestions(true);
 
-  //     if (nextQuestion === questions.length) {
-  //       setTimeout(() => {
-  //         endGame();
-  //       }, 1000);
-  //     } else {
-  //       setTimeout(() => {
-  //         setCurrentQuestion(nextQuestion);
-  //         setTimerPercentage(100);
-  //         setWrongAnswer(false);
-  //         setDisableQuestions(false);
-  //       }, 1000);
-  //     }
-  //   }
-  // }, [timerPercentage]);
+      if (nextQuestion === questions.length) {
+        setTimeout(() => {
+          endGame();
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          setCurrentQuestion(nextQuestion);
+          setTimerPercentage(100);
+          setWrongAnswer(false);
+          setDisableQuestions(false);
+        }, 1000);
+      }
+    }
+  }, [timerPercentage]);
 
   const handleAnswer = (isCorrect, id) => {
     const nextQuestion = currentQuestion + 1;
@@ -80,7 +80,6 @@ export default function Question({ questions, correctAnswers }) {
       }, 1000);
     }
   };
-
 
   return (
     <>

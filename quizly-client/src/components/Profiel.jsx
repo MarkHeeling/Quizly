@@ -63,9 +63,9 @@ export default function Profiel() {
                   <input
                     type="file"
                     accept="image/*"
-                    // {...register("image", {
-                    //   required: "Dit is veld is verplicht",
-                    // })}
+                    {...register("image", {
+                      required: "Dit is veld is verplicht",
+                    })}
                     id="image"
                   />
                 </div>
