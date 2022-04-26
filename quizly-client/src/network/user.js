@@ -16,8 +16,8 @@ export async function getAllUsers() {
   return await axiosClient.get(`/user/users`);
 }
 
-export async function updateUser(id, data) {
-  return await axiosClient.put(`/users/${id}`, JSON.stringify(data));
+export async function updateUser(data) {
+  return await axiosClient.post(`/user/update`, JSON.stringify(data));
 }
 
 export async function deleteUser(id) {

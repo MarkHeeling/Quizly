@@ -32,7 +32,7 @@ public class QuestionController {
         private QuestionRepository questionRepository;
 
         @GetMapping("/getQuestions")
-        @PreAuthorize("hasRole('USER')")
+        @PreAuthorize("hasAnyRole('USER','ADMIN')")
         public List<Question> getQuestions() {
                 return questionRepository.findAll();
         } 
@@ -44,10 +44,10 @@ public class QuestionController {
         }
 
         @PostMapping("/newQuestion")
-        @PreAuthorize("hasRole('USER')")
+        @PreAuthorize("hasAnyRole('USER','ADMIN')")
         public ResponseEntity<?> newQuestion(@Valid @RequestBody CreateQuestionRequest createQuestionRequest, @CurrentUser UserPrincipal currentUser) {
                 Question result = new Question(createQuestionRequest.getQuestion(), createQuestionRequest.getCorrect_answer(),
-                createQuestionRequest.getIncorrect_answer(), currentUser.getUsername());
+                createQuestionRequest.getIncorrect_answer(), currentUser.getUsername(), createQuestionRequest.getCategory());
 
                 Question newQuestion = questionRepository.save(result);
 
@@ -59,7 +59,7 @@ public class QuestionController {
         }
 
         @DeleteMapping("/deleteQuestion/{id}")
-        @PreAuthorize("hasRole('USER')")
+        @PreAuthorize("hasAnyRole('USER','ADMIN')")
         public ResponseEntity<?> deleteQuestion(@PathVariable(value = "id") Long id) {
                 Question question = questionRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));

@@ -7,6 +7,7 @@ export const AuthContext = createContext({});
 function AuthProvider({ children } ) {
   const [auth, toggleAuth] = useState({
     isAuth: false,
+    role: "user",
     status: "pending",
   });
 
@@ -17,21 +18,25 @@ function AuthProvider({ children } ) {
     if (token) {
       const decoded = jwt_decode(token);
       const currentTime = Date.now() / 1000;
+      const role = decoded.role[0].authority;
       if (decoded.exp < currentTime) {
         localStorage.removeItem("token");
         toggleAuth({
+          role: "user",
           isAuth: false,
           status: "done",
         });
       } else {
         toggleAuth({
           ...auth,
+          role: role,
           isAuth: true,
           status: "done",
         });
       }
     } else {
       toggleAuth({
+        user: "user",
         isAuth: false,
         status: "done",
       });
@@ -61,6 +66,7 @@ function AuthProvider({ children } ) {
 
   const contextData = {
     isAuth: auth.isAuth,
+    role: auth.role,
     status: auth.status,
     login,
     logout,

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -29,23 +28,23 @@ public class UserController {
     PasswordEncoder passwordEncoder;
 
     @GetMapping("/user/me")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), currentUser.getEmail(), currentUser.getPassword());
+        UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName(),
+                currentUser.getEmail(), currentUser.getPassword());
         return userSummary;
     }
 
     @PostMapping("/user/update")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest,
             @CurrentUser UserPrincipal currentUser) {
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", currentUser.getId()));
-
+        
         user.setName(updateUserRequest.getName());
         user.setUsername(updateUserRequest.getUsername());
         user.setEmail(updateUserRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(updateUserRequest.getPassword()));
 
         userRepository.save(user);
         return ResponseEntity.ok(new ApiResponse(true, "User updated successfully"));
@@ -53,10 +52,11 @@ public class UserController {
     }
 
     @GetMapping("/user/users")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public List<UserSummary> getAllUsers(@CurrentUser UserPrincipal currentUser) {
         return userRepository.findAll().stream()
-                .map(user -> new UserSummary(user.getId(), user.getUsername(), user.getName(), user.getEmail(), user.getPassword()))
+                .map(user -> new UserSummary(user.getId(), user.getUsername(), user.getName(), user.getEmail(),
+                        user.getPassword()))
                 .collect(Collectors.toList());
     }
 
@@ -81,6 +81,17 @@ public class UserController {
                 user.getCreatedAt());
 
         return userProfile;
+    }
+
+    //Geeft ? weer ook al bestaat de gebruiker wel
+    @DeleteMapping("/deleteUser/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+
+        userRepository.delete(user);
+        return ResponseEntity.ok(new ApiResponse(true, "User deleted successfully"));
     }
 
 }

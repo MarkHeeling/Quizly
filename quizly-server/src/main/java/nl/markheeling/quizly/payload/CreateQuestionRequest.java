@@ -15,6 +15,10 @@ public class CreateQuestionRequest {
   @Size(max = 200)
   private String incorrect_answer;
 
+  @NotBlank
+  @Size(max = 40)
+  private String category;
+
   public String getQuestion() {
     return question;
   }
@@ -37,6 +41,14 @@ public class CreateQuestionRequest {
 
   public void setIncorrect_answer(String incorrect_answer) {
     this.incorrect_answer = incorrect_answer;
+  }
+
+  public String getCategory() {
+    return category;
+  }
+
+  public void setCategory(String category) {
+    this.category = category;
   }
 
 }

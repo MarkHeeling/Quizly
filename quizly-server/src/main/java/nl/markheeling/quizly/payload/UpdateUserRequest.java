@@ -9,10 +9,6 @@ public class UpdateUserRequest {
 
   @NotBlank
   @Size(max = 40)
-  private String password;
-
-  @NotBlank
-  @Size(max = 40)
   private String name;
 
   @NotBlank
@@ -26,14 +22,6 @@ public class UpdateUserRequest {
 
   public void setUsername(String username) {
     this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public String getName() {

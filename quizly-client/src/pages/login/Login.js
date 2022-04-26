@@ -38,7 +38,7 @@ export default function Login() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="container-middle">
             <div className="row">
-              <label name="usernameOrEmail">Emailadres / Gebruikersnaam</label>
+              <label name="usernameOrEmail">Email / Gebruikersnaam</label>
               <div className="input">
                 <input
                   type="text"
@@ -85,8 +85,8 @@ export default function Login() {
           <div className="container-bottom">
             <button className="button">Inloggen</button>
           </div>
-          <div className="forgot-password">
-            <Link to="/wachtwoord-vergeten">Wachtwoord vergeten?</Link>
+          <div className="forgot-password">Nog geen account? <br/>
+            <Link className="register" to="/registreren">Start hier</Link>
           </div>
         </form>
       </div>

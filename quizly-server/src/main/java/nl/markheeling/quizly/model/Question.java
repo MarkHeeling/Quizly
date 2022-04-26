@@ -25,16 +25,21 @@ public class Question {
 
     @NotBlank
     @Size(max = 40)
+    private String category;
+
+    @NotBlank
+    @Size(max = 40)
     private String created_by;
 
     public Question() {
 
     }
 
-    public Question(String question, String correct_answer, String incorrect_answer, String created_by) {
+    public Question(String question, String correct_answer, String incorrect_answer, String created_by, String category) {
         this.question = question;
         this.correct_answer = correct_answer;
         this.incorrect_answer = incorrect_answer;
+        this.category = category;
         this.created_by = created_by;
     }
 
@@ -68,6 +73,14 @@ public class Question {
 
     public void setIncorrect_answer(String incorrect_answer) {
         this.incorrect_answer = incorrect_answer;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getCreated_by() {
