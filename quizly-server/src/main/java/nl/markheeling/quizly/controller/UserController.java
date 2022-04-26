@@ -5,8 +5,10 @@ import nl.markheeling.quizly.model.User;
 import nl.markheeling.quizly.payload.*;
 import nl.markheeling.quizly.repository.UserRepository;
 import nl.markheeling.quizly.security.UserPrincipal;
+import nl.markheeling.quizly.utils.FileUploadUtil;
 import nl.markheeling.quizly.security.CurrentUser;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 
 import javax.validation.Valid;
 
@@ -14,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,15 +43,24 @@ public class UserController {
     @PostMapping("/user/update")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest,
-            @CurrentUser UserPrincipal currentUser) {
+            @CurrentUser UserPrincipal currentUser, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", currentUser.getId()));
-        
+
         user.setName(updateUserRequest.getName());
         user.setUsername(updateUserRequest.getUsername());
         user.setEmail(updateUserRequest.getEmail());
+        user.setProfile_picture(fileName);
 
         userRepository.save(user);
+
+
+        String uploadDir = "user-photos/" + currentUser.getId();
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        
         return ResponseEntity.ok(new ApiResponse(true, "User updated successfully"));
 
     }
@@ -83,7 +97,7 @@ public class UserController {
         return userProfile;
     }
 
-    //Geeft ? weer ook al bestaat de gebruiker wel
+    // Geeft ? weer ook al bestaat de gebruiker wel
     @DeleteMapping("/deleteUser/{id}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long id) {
@@ -93,5 +107,4 @@ public class UserController {
         userRepository.delete(user);
         return ResponseEntity.ok(new ApiResponse(true, "User deleted successfully"));
     }
-
 }
