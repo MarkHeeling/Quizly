@@ -23,7 +23,7 @@ export default function Users() {
   const [questionId, setQuestionId] = useState();
 
   useEffect(() => {
-        getQuestions().then(
+    getQuestions().then(
       function (response) {
         setQuestions(response.data);
       },
@@ -84,9 +84,10 @@ export default function Users() {
         <thead>
           <tr>
             <th>Vraag</th>
-            <th>
+            <th>Categorie</th>
+            <th className="add-question">
               <button className="button" onClick={openModal}>
-                Vraag aanmaken
+                +
               </button>
             </th>
           </tr>
@@ -96,6 +97,7 @@ export default function Users() {
             return (
               <tr key={question.id}>
                 <td>{question.question}</td>
+                <td>{question.category}</td>
                 <td className="table-actions">
                   <button
                     onClick={() => handleDeleteQuestion(question.id)}
@@ -138,6 +140,28 @@ export default function Users() {
                   </div>
                   {errors.question && (
                     <p className="err-message">{errors.question?.message} </p>
+                  )}
+                </div>
+                <div className="row">
+                  <label name="category">Categorie</label>
+                  <div className="input">
+                    <select
+                      {...register("category", {
+                        required: "Dit is veld is verplicht",
+                      })}
+                      id="category"
+                    >
+                      <option value="Geschiedenis">Geschiedenis</option>
+                      <option value="Sport">Sport</option>
+                      <option value="Aardrijkskunde">Aardrijkskunde</option>
+                      <option value="Kunst">Kunst</option>
+                      <option value="Entertainment">Entertainment</option>
+                      <option value="Wetenschap">Wetenschap</option>
+
+                    </select>
+                  </div>
+                  {errors.category && (
+                    <p className="err-message">{errors.category?.message} </p>
                   )}
                 </div>
                 <div className="row">

@@ -1,8 +1,11 @@
-import React from "react";
-import { Link, Outlet} from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, Outlet } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import "./MijnAccount.css";
 
+
 export default function MijnAccount() {
+  const { role } = useContext(AuthContext);
 
   return (
     <>
@@ -17,9 +20,11 @@ export default function MijnAccount() {
               <li>
                 <Link to="vragen">Vragen</Link>
               </li>
-              <li>
-                <Link to="gebruikers">Gebruikers</Link>
-              </li>
+              {role === "ROLE_ADMIN" && (
+                <li>
+                  <Link to="gebruikers">Gebruikers</Link>
+                </li>
+              )}
             </ul>
           </nav>
         </div>

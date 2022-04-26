@@ -1,7 +1,7 @@
 // import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { getUser } from "../network/user";
+import { getUser, updateUser } from "../network/user";
 
 export default function Profiel() {
   const [user, setUser] = useState(null);
@@ -28,8 +28,15 @@ export default function Profiel() {
   }, [user, reset]);
 
   const onSubmit = (data) => {
-    console.log(data);
-  };
+    console.log(data)
+    updateUser(data).then(
+      function (response) {
+        setUser(response.data);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );  };
 
   return (
     <>
@@ -47,8 +54,8 @@ export default function Profiel() {
                     })}
                     id="username"
                   />
-                  <p className="err-message">{errors.username?.message} </p>
                 </div>
+                <p className="err-message">{errors.username?.message} </p>
               </div>
               <div className="half">
                 <label name="image">Profielfoto</label>
@@ -56,13 +63,13 @@ export default function Profiel() {
                   <input
                     type="file"
                     accept="image/*"
-                    {...register("image", {
-                      required: "Dit is veld is verplicht",
-                    })}
+                    // {...register("image", {
+                    //   required: "Dit is veld is verplicht",
+                    // })}
                     id="image"
                   />
-                  <p className="err-message">{errors.image?.message} </p>
                 </div>
+                <p className="err-message">{errors.image?.message} </p>
               </div>
             </div>
             <div className="row">
@@ -76,8 +83,8 @@ export default function Profiel() {
                     })}
                     id="username"
                   />
-                  <p className="err-message">{errors.email?.message} </p>
                 </div>
+                <p className="err-message">{errors.email?.message} </p>
               </div>
               <div className="half">
                 <label name="name">Naam</label>
@@ -89,8 +96,8 @@ export default function Profiel() {
                     })}
                     id="name"
                   />
-                  <p className="err-message">{errors.name?.message} </p>
                 </div>
+                <p className="err-message">{errors.name?.message} </p>
               </div>
             </div>
           </div>

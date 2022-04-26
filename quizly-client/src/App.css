@@ -34,13 +34,12 @@
   width: 350px;
   margin: 0 auto;
   border-radius: 25px;
-  padding: 0 1.5rem;
+  padding: 1.5rem;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
-
-@media only screen and (max-width: 640px) {
+@media screen and (max-width: 640px) {
   .container {
-    width: 350px;
+    width: 300px;
   }
 }
 
@@ -54,13 +53,18 @@
 }
 
 .half {
-  width: 49%;
+  width: 48%;
   flex: 0 0 auto;
+}
+
+@media screen and (max-width: 1000px) {
+  .half {
+    width: 100%;
+  }
 }
 
 .container-bottom {
   font-size: 0.8rem;
-  margin-bottom: 1.5rem;
 }
 
 .container-bottom button {

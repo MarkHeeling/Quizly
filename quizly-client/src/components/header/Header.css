@@ -16,11 +16,17 @@ header a {
   padding: 1.5rem;
 }
 
+@media screen and (max-width: 860px) {
+  .header-items {
+    padding: 1rem;
+  }
+}
+
 nav.header-items {
   justify-content: left;
 }
 
-ul.header-items {
+div.header-items {
   justify-content: right;
 }
 
@@ -28,7 +34,51 @@ ul.header-items {
   font-size: 2rem;
 }
 
+@media screen and (max-width: 860px) {
+  .logo-header {
+    font-size: 1.5rem;
+  }
+}
+
 .menu-login {
-  background: #374df6;
+  background: #f52237;
   border: solid;
+  font-size: 12px;
+}
+
+.user-icon {
+  background: white;
+  font-size: 12px;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.header-dropdown {
+  position: absolute;
+}
+
+div[role="menu"] {
+  visibility: hidden;
+  display: none;
+}
+
+div[role="menu"].visible {
+  visibility: visible;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin-top: 160px;
+  background: white;
+  padding: 5px;
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.menu-signup {
+  font-size: 12px;
 }

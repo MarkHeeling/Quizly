@@ -54,6 +54,12 @@
   padding: 10px;
 }
 
+@media screen and (max-width: 640px) {
+  .react-tabs__tab-list {
+    font-size: 12px;
+  }
+}
+
 .react-tabs__tab--selected {
   background: #ff5768;
   color: white;

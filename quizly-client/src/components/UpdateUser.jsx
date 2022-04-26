@@ -28,50 +28,50 @@ export default function UpdateUser({ userId }) {
   }, [user, reset]);
 
   const onSubmit = async (data) => {
-    console.log(data)
+    console.log(data);
   };
 
   return (
     <>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="container-middle">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="container-middle">
           <div className="row">
-              <label name="username">Gebruikersnaam</label>
-              <div className="input">
-                <input
-                  type="text"
-                  {...register("username", {
-                    required: "Dit is veld is verplicht",
-                  })}
-                  onChange={(e) => (e.target.value)}
-                  id="username"
-                />
-                {errors.username && (
-                  <p className="err-message">{errors.username?.message} </p>
-                )}
-              </div>
+            <label name="username">Gebruikersnaam</label>
+            <div className="input">
+              <input
+                type="text"
+                {...register("username", {
+                  required: "Dit is veld is verplicht",
+                })}
+                onChange={(e) => e.target.value}
+                id="username"
+              />
             </div>
-            <div className="row">
-              <label name="email">Emailadres</label>
-              <div className="input">
-                <input
-                  type="email"
-                  {...register("email", {
-                    required: "Dit is veld is verplicht",
-                  })}
-                  onChange={(e) => (e.target.value)}
-                  id="email"
-                />
-                {errors.email && (
-                  <p className="err-message">{errors.email?.message} </p>
-                )}
-              </div>
+            {errors.username && (
+              <p className="err-message">{errors.username?.message} </p>
+            )}
+          </div>
+          <div className="row">
+            <label name="email">Emailadres</label>
+            <div className="input">
+              <input
+                type="email"
+                {...register("email", {
+                  required: "Dit is veld is verplicht",
+                })}
+                onChange={(e) => e.target.value}
+                id="email"
+              />
             </div>
+            {errors.email && (
+              <p className="err-message">{errors.email?.message} </p>
+            )}
           </div>
-          <div className="container-bottom">
-            <button className="button">Wijzigen</button>
-          </div>
-        </form>
+        </div>
+        <div className="container-bottom">
+          <button className="button">Wijzigen</button>
+        </div>
+      </form>
     </>
   );
 }

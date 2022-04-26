@@ -14,7 +14,7 @@ import Lobby from "./pages/lobby/Lobby";
 import Quiz from "./pages/quiz/Quiz";
 
 function App() {
-  const { isAuth } = useContext(AuthContext);
+  const { isAuth, role } = useContext(AuthContext);
   const location = useLocation();
 
   return (
@@ -29,7 +29,9 @@ function App() {
             <Route path="/mijn-account" element={<MijnAccount />}>
               <Route path="profiel" element={<Profiel />} />
               <Route path="vragen" element={<MijnVragen />} />
-              <Route path="gebruikers" element={<Users />} />
+              {role === "ROLE_ADMIN" && (
+                <Route path="gebruikers" element={<Users />} />
+              )}
             </Route>
             <Route path="/lobby" element={<Lobby />} />
             <Route path="/quiz" element={<Quiz />} />

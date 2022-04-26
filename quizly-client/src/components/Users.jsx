@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Modal from "react-modal";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
-import { getAllUsers } from "../network/user";
+import { deleteUser, getAllUsers } from "../network/user";
 import { useState } from "react";
 import UpdateUser from "./UpdateUser";
 
@@ -30,7 +30,7 @@ export default function Users() {
     setIsOpen(false);
   }
 
-  const deleteUser = (id) => {
+  const handleDeleteUser = (id) => {
     deleteUser(id).then(
       function (response) {
         setUsers(response.data);
@@ -67,7 +67,7 @@ export default function Users() {
                     <HiOutlinePencilAlt size={25} />
                   </button>
                   <button
-                    onClick={() => deleteUser(user.id)}
+                    onClick={() => handleDeleteUser(user.id)}
                     className="table-button delete"
                   >
                     <HiOutlineTrash size={25} />

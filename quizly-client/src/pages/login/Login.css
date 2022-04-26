@@ -1,6 +1,11 @@
 .forgot-password{
     font-size: 15px;
     font-weight: 500;
-    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
     text-align: center;
+}
+
+.register {
+    text-decoration: underline;
+    color: #374df6;
 }
