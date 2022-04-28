@@ -28,7 +28,7 @@ public class User extends DateAudit {
     private String name;
 
     @NotBlank
-    @Size(max = 15)
+    @Size(max = 40)
     private String username;
 
     @NaturalId(mutable=true)
@@ -41,9 +41,8 @@ public class User extends DateAudit {
     @Size(max = 100)
     private String password;
 
-    @Size(max = 60)
+    @Size(max = 100)
     private String profile_picture;
-
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -110,11 +109,11 @@ public class User extends DateAudit {
         this.roles = roles;
     }
 
-    public String getProfile_picture() {
+    public String getProfilePicture() {
         return profile_picture;
     }
 
-    public void setProfile_picture(String profile_picture) {
+    public void setProfilePicture(String profile_picture) {
         this.profile_picture = profile_picture;
     }
 

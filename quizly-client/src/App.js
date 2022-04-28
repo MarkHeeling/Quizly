@@ -12,6 +12,7 @@ import Signup from "./pages/signup/Signup";
 import Users from "./components/Users";
 import Lobby from "./pages/lobby/Lobby";
 import Quiz from "./pages/quiz/Quiz";
+import ProfilePicture from "./components/ProfilePicture";
 
 function App() {
   const { isAuth, role } = useContext(AuthContext);
@@ -28,6 +29,7 @@ function App() {
           <>
             <Route path="/mijn-account" element={<MijnAccount />}>
               <Route path="profiel" element={<Profiel />} />
+              <Route path="profielfoto" element={<ProfilePicture />} />
               <Route path="vragen" element={<MijnVragen />} />
               {role === "ROLE_ADMIN" && (
                 <Route path="gebruikers" element={<Users />} />

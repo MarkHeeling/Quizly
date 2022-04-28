@@ -1,12 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import "./Header.css";
 import useDropdownMenu from "react-accessible-dropdown-menu-hook";
+import { getProfilePicture } from "../../network/user";
 
 export default function Header() {
   const { isAuth, logout } = useContext(AuthContext);
   const { buttonProps, itemProps, isOpen } = useDropdownMenu(2);
+
+  const [profilePicturePath, setProfilePicturePath] = useState("standard-icon.svg");
+
+  useEffect(() => {
+    if (isAuth) {
+      getProfilePicture().then((imagePath) => {
+        setProfilePicturePath(imagePath.data);
+      });
+    }
+  }, [isAuth]);
 
   return (
     <header className="header">
@@ -25,7 +36,7 @@ export default function Header() {
           <>
             <button
               style={{
-                backgroundImage: `url("https://www.antagonist.nl/static/menu/icons/user.svg")`,
+                backgroundImage: `url("/uploads/${profilePicturePath}")`,
               }}
               className="button user-icon"
               {...buttonProps}

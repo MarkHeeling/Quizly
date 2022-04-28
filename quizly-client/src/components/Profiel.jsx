@@ -5,6 +5,7 @@ import { getUser, updateUser } from "../network/user";
 
 export default function Profiel() {
   const [user, setUser] = useState(null);
+  const [apiSucces, setApiSucces] = useState(false);
   const {
     register,
     handleSubmit,
@@ -28,15 +29,17 @@ export default function Profiel() {
   }, [user, reset]);
 
   const onSubmit = (data) => {
-    console.log(data)
+    console.log(data);
     updateUser(data).then(
       function (response) {
         setUser(response.data);
+        setApiSucces(true);
       },
       (error) => {
         console.error(error);
       }
-    );  };
+    );
+  };
 
   return (
     <>
@@ -58,22 +61,6 @@ export default function Profiel() {
                 <p className="err-message">{errors.username?.message} </p>
               </div>
               <div className="half">
-                <label name="image">Profielfoto</label>
-                <div className="input">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    {...register("image", {
-                      required: "Dit is veld is verplicht",
-                    })}
-                    id="image"
-                  />
-                </div>
-                <p className="err-message">{errors.image?.message} </p>
-              </div>
-            </div>
-            <div className="row">
-              <div className="half">
                 <label name="email">Emailadres</label>
                 <div className="input">
                   <input
@@ -86,6 +73,8 @@ export default function Profiel() {
                 </div>
                 <p className="err-message">{errors.email?.message} </p>
               </div>
+            </div>
+            <div className="row">
               <div className="half">
                 <label name="name">Naam</label>
                 <div className="input">
@@ -101,6 +90,11 @@ export default function Profiel() {
               </div>
             </div>
           </div>
+          {apiSucces && (
+            <div className="succ-message-container">
+              Gegevens succesvol geupdate.
+            </div>
+          )}
           <div className="form-submit">
             <button className="button form-button">Bijwerken</button>
           </div>

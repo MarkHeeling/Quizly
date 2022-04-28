@@ -5,10 +5,8 @@ import nl.markheeling.quizly.model.User;
 import nl.markheeling.quizly.payload.*;
 import nl.markheeling.quizly.repository.UserRepository;
 import nl.markheeling.quizly.security.UserPrincipal;
-import nl.markheeling.quizly.utils.FileUploadUtil;
 import nl.markheeling.quizly.security.CurrentUser;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.StringUtils;
 
 import javax.validation.Valid;
 
@@ -16,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,9 +39,7 @@ public class UserController {
     @PostMapping("/user/update")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest,
-            @CurrentUser UserPrincipal currentUser, @RequestParam("image") MultipartFile multipartFile) throws IOException {
-
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            @CurrentUser UserPrincipal currentUser)  {
 
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", currentUser.getId()));
@@ -53,16 +47,21 @@ public class UserController {
         user.setName(updateUserRequest.getName());
         user.setUsername(updateUserRequest.getUsername());
         user.setEmail(updateUserRequest.getEmail());
-        user.setProfile_picture(fileName);
 
         userRepository.save(user);
 
-
-        String uploadDir = "user-photos/" + currentUser.getId();
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
         
         return ResponseEntity.ok(new ApiResponse(true, "User updated successfully"));
 
+    }
+
+    @GetMapping("/user/me/profile-picture")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')") 
+    public ResponseEntity<String> getProfilePicture(@CurrentUser UserPrincipal currentUser) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", currentUser.getId()));
+
+        return ResponseEntity.ok(user.getProfilePicture());
     }
 
     @GetMapping("/user/users")

@@ -16,11 +16,6 @@ public class UpdateUserRequest {
   @Email
   private String email;
 
-  @Size(max = 60)
-  private String profile_picture;
-  
-
-
   public String getUsername() {
     return username;
   }
@@ -45,11 +40,4 @@ public class UpdateUserRequest {
     this.email = email;
   }
 
-  public String getProfile_picture() {
-    return profile_picture;
-  }
-
-  public void setProfile_picture(String profile_picture) {
-    this.profile_picture = profile_picture;
-  }
 }

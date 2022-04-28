@@ -18,6 +18,9 @@ export default function MijnAccount() {
                 <Link to="profiel">Profiel</Link>
               </li>
               <li>
+                <Link to="profielfoto">Profielfoto</Link>
+              </li>
+              <li>
                 <Link to="vragen">Vragen</Link>
               </li>
               {role === "ROLE_ADMIN" && (
