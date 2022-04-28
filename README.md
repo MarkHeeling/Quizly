@@ -1,1 +1,1 @@
-# Quizly# Quizly
+# Quizly
