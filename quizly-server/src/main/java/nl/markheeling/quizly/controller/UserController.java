@@ -65,7 +65,7 @@ public class UserController {
     }
 
     @GetMapping("/user/users")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public List<UserSummary> getAllUsers(@CurrentUser UserPrincipal currentUser) {
         return userRepository.findAll().stream()
                 .map(user -> new UserSummary(user.getId(), user.getUsername(), user.getName(), user.getEmail(),
@@ -83,17 +83,6 @@ public class UserController {
     public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
         Boolean isAvailable = !userRepository.existsByEmail(email);
         return new UserIdentityAvailability(isAvailable);
-    }
-
-    @GetMapping("/users/{username}")
-    public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
-
-        UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(), user.getName(),
-                user.getCreatedAt());
-
-        return userProfile;
     }
 
     // Geeft ? weer ook al bestaat de gebruiker wel
