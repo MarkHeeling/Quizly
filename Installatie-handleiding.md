@@ -14,7 +14,8 @@ Om de backend klaar te maken voor de gebruik moeten de volgende stappen worden g
 2. Ga vervolgens naar `Quizly/quizly-server/src/main/resources/application.properties`
 3. Vul de dik gedrukte velden aan met de database gegevens van stap 1 
    `## Server Properties `
-   `spring.datasource.url= jdbc:mysql://localhost:3306/<`**NAAM DATABASE**`>? spring.datasource.username=` **USERNAME**
+   `spring.datasource.url= jdbc:mysql://localhost:3306/<`**NAAM DATABASE**`>? 
+    spring.datasource.username=` **USERNAME**
    `spring.datasource.password=` **PASSWORD\****
 4. Genereer vervolgens een geldige SHA512 secret ([Dit kan hier](https://passwordsgenerator.net/sha512-hash-generator/))
 5. Vul de SHA512 secret in bij JOUW SECRET in het `application.properties` bestand
