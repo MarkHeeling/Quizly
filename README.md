@@ -20,9 +20,9 @@ Om de backend klaar te maken voor de gebruik moeten de volgende stappen worden g
 
 3. Vul de dik gedrukte velden aan met de database gegevens van stap 1 
 
-   spring.datasource.url= jdbc:mysql://localhost:3306/NAAMDATABASE
-   spring.datasource.username= USERNAME
-   spring.datasource.password= PASSWORD
+spring.datasource.url= jdbc:mysql://localhost:3306/**NAAMDATABASE**
+spring.datasource.username= **USERNAME**
+spring.datasource.password= **PASSWORD**
 
 4. Genereer vervolgens een geldige SHA512 secret ([Dit kan hier](https://passwordsgenerator.net/sha512-hash-generator/))
 
