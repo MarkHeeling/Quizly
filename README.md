@@ -19,7 +19,6 @@ Om de backend klaar te maken voor de gebruik moeten de volgende stappen worden g
 2. Ga vervolgens naar `Quizly/quizly-server/src/main/resources/application.properties`
 
 3. Vul de dik gedrukte velden aan met de database gegevens van stap 1 
-
 spring.datasource.url= jdbc:mysql://localhost:3306/**NAAMDATABASE**
 spring.datasource.username= **USERNAME**
 spring.datasource.password= **PASSWORD**
