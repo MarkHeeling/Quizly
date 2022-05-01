@@ -5,7 +5,7 @@ export async function getQuestions(){
 }
 
 export async function getQuestion(id){
-  return await axiosClient.get(`/question/getQuestion/${id}`);
+  return await axiosClient.get(`/question/${id}`);
 }
 
 export async function createQuestion(data){
