@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 public final class FileUtil {
 
   private FileUtil() {
-    // restrict instantiation
   }
 
   public static final String folderPath =  "quizly-client/public/uploads/";

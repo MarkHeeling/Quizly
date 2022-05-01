@@ -26,134 +26,135 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@ContextConfiguration(classes = {AuthController.class})
+@ContextConfiguration(classes = { AuthController.class })
 @ExtendWith(SpringExtension.class)
 class AuthControllerTest {
-    @Autowired
-    private AuthController authController;
+        @Autowired
+        private AuthController authController;
 
-    @MockBean
-    private AuthenticationManager authenticationManager;
+        @MockBean
+        private AuthenticationManager authenticationManager;
 
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+        @MockBean
+        private JwtTokenProvider jwtTokenProvider;
 
-    @MockBean
-    private PasswordEncoder passwordEncoder;
+        @MockBean
+        private PasswordEncoder passwordEncoder;
 
-    @MockBean
-    private RoleRepository roleRepository;
+        @MockBean
+        private RoleRepository roleRepository;
 
-    @MockBean
-    private UserRepository userRepository;
+        @MockBean
+        private UserRepository userRepository;
 
+        @Test
+        void testAuthenticateUser() throws Exception {
+                when(this.jwtTokenProvider.generateToken((org.springframework.security.core.Authentication) any()))
+                                .thenReturn("ABC123");
+                when(this.authenticationManager.authenticate((org.springframework.security.core.Authentication) any()))
+                                .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
 
-    @Test
-    void testAuthenticateUser() throws Exception {
-        when(this.jwtTokenProvider.generateToken((org.springframework.security.core.Authentication) any()))
-                .thenReturn("ABC123");
-        when(this.authenticationManager.authenticate((org.springframework.security.core.Authentication) any()))
-                .thenReturn(new TestingAuthenticationToken("Principal", "Credentials"));
+                LoginRequest loginRequest = new LoginRequest();
+                loginRequest.setPassword("wachtwoord");
+                loginRequest.setUsernameOrEmail("vincentvangogh");
+                String content = (new ObjectMapper()).writeValueAsString(loginRequest);
+                MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/login")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(content);
+                MockMvcBuilders.standaloneSetup(this.authController)
+                                .build()
+                                .perform(requestBuilder)
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .string("{\"accessToken\":\"ABC123\",\"tokenType\":\"Bearer\"}"));
+        }
 
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setPassword("wachtwoord");
-        loginRequest.setUsernameOrEmail("vincentvangogh");
-        String content = (new ObjectMapper()).writeValueAsString(loginRequest);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
-        MockMvcBuilders.standaloneSetup(this.authController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content().string("{\"accessToken\":\"ABC123\",\"tokenType\":\"Bearer\"}"));
-    }
+        @Test
+        void testAuthenticateUser2() throws Exception {
+                when(this.jwtTokenProvider.generateToken((org.springframework.security.core.Authentication) any()))
+                                .thenReturn("ABC123");
+                when(this.authenticationManager.authenticate((org.springframework.security.core.Authentication) any()))
+                                .thenThrow(new AppException("An error occurred"));
 
-    @Test
-    void testAuthenticateUser2() throws Exception {
-        when(this.jwtTokenProvider.generateToken((org.springframework.security.core.Authentication) any()))
-                .thenReturn("ABC123");
-        when(this.authenticationManager.authenticate((org.springframework.security.core.Authentication) any()))
-                .thenThrow(new AppException("An error occurred"));
+                LoginRequest loginRequest = new LoginRequest();
+                loginRequest.setPassword("wachtwoord");
+                loginRequest.setUsernameOrEmail("vincentvangogh");
+                String content = (new ObjectMapper()).writeValueAsString(loginRequest);
+                MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/login")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(content);
+                ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authController)
+                                .build()
+                                .perform(requestBuilder);
+                actualPerformResult.andExpect(MockMvcResultMatchers.status().is(500));
+        }
 
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setPassword("iloveyou");
-        loginRequest.setUsernameOrEmail("janedoe");
-        String content = (new ObjectMapper()).writeValueAsString(loginRequest);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(500));
-    }
+        @Test
+        void testRegisterUser() throws Exception {
+                when(this.userRepository.existsByEmail((String) any())).thenReturn(true);
+                when(this.userRepository.existsByUsername((String) any())).thenReturn(true);
 
-    @Test
-    void testRegisterUser() throws Exception {
-        when(this.userRepository.existsByEmail((String) any())).thenReturn(true);
-        when(this.userRepository.existsByUsername((String) any())).thenReturn(true);
+                SignUpRequest signUpRequest = new SignUpRequest();
+                signUpRequest.setEmail("vincent@vangogh.nl");
+                signUpRequest.setName("Vincent");
+                signUpRequest.setPassword("wachtwoord");
+                signUpRequest.setUsername("vanGogh");
+                String content = (new ObjectMapper()).writeValueAsString(signUpRequest);
+                MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(content);
+                ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authController)
+                                .build()
+                                .perform(requestBuilder);
+                actualPerformResult.andExpect(MockMvcResultMatchers.status().is(400))
+                                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .string("{\"success\":false,\"message\":\"Deze gebruikersnaam bestaat al\"}"));
+        }
 
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setEmail("vincent@vangogh.nl");
-        signUpRequest.setName("Vincent");
-        signUpRequest.setPassword("wachtwoord");
-        signUpRequest.setUsername("vanGogh");
-        String content = (new ObjectMapper()).writeValueAsString(signUpRequest);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(400))
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"success\":false,\"message\":\"Deze gebruikersnaam bestaat al\"}"));
-    }
+        @Test
+        void testRegisterUser2() throws Exception {
+                when(this.userRepository.existsByEmail((String) any())).thenReturn(true);
+                when(this.userRepository.existsByUsername((String) any())).thenReturn(false);
 
-    @Test
-    void testRegisterUser2() throws Exception {
-        when(this.userRepository.existsByEmail((String) any())).thenReturn(true);
-        when(this.userRepository.existsByUsername((String) any())).thenReturn(false);
+                SignUpRequest signUpRequest = new SignUpRequest();
+                signUpRequest.setEmail("vincent@vangogh.nl");
+                signUpRequest.setName("vincent");
+                signUpRequest.setPassword("wachtwoord");
+                signUpRequest.setUsername("vanGogh");
+                String content = (new ObjectMapper()).writeValueAsString(signUpRequest);
+                MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(content);
+                ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authController)
+                                .build()
+                                .perform(requestBuilder);
+                actualPerformResult.andExpect(MockMvcResultMatchers.status().is(400))
+                                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .string("{\"success\":false,\"message\":\"Dit emailadres is al in gebruik\"}"));
+        }
 
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setEmail("vincent@vangogh.nl");
-        signUpRequest.setName("vincent");
-        signUpRequest.setPassword("wachtwoord");
-        signUpRequest.setUsername("vanGogh");
-        String content = (new ObjectMapper()).writeValueAsString(signUpRequest);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(400))
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"success\":false,\"message\":\"Dit emailadres is al in gebruik\"}"));
-    }
+        @Test
+        void testRegisterUser3() throws Exception {
+                when(this.userRepository.existsByEmail((String) any()))
+                                .thenThrow(new AppException("An error occurred"));
+                when(this.userRepository.existsByUsername((String) any()))
+                                .thenThrow(new AppException("An error occurred"));
 
-    @Test
-    void testRegisterUser3() throws Exception {
-        when(this.userRepository.existsByEmail((String) any())).thenThrow(new AppException("An error occurred"));
-        when(this.userRepository.existsByUsername((String) any())).thenThrow(new AppException("An error occurred"));
-
-        SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setEmail("vincent@vangogh.nl");
-        signUpRequest.setName("vincent");
-        signUpRequest.setPassword("wachtwoord");
-        signUpRequest.setUsername("vanGogh");
-        String content = (new ObjectMapper()).writeValueAsString(signUpRequest);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is(500));
-    }
+                SignUpRequest signUpRequest = new SignUpRequest();
+                signUpRequest.setEmail("vincent@vangogh.nl");
+                signUpRequest.setName("vincent");
+                signUpRequest.setPassword("wachtwoord");
+                signUpRequest.setUsername("vanGogh");
+                String content = (new ObjectMapper()).writeValueAsString(signUpRequest);
+                MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(content);
+                ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.authController)
+                                .build()
+                                .perform(requestBuilder);
+                actualPerformResult.andExpect(MockMvcResultMatchers.status().is(500));
+        }
 }
-

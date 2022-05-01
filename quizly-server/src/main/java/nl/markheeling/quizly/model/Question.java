@@ -35,7 +35,8 @@ public class Question {
 
     }
 
-    public Question(String question, String correct_answer, String incorrect_answer, String created_by, String category) {
+    public Question(String question, String correct_answer, String incorrect_answer, String created_by,
+            String category) {
         this.question = question;
         this.correct_answer = correct_answer;
         this.incorrect_answer = incorrect_answer;

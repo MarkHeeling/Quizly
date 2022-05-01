@@ -1,7 +1,6 @@
 import React from "react";
 
-export default function ProgressBar({timerPercentage}) {
-
+export default function ProgressBar({ timerPercentage }) {
   return (
     <div>
       <div className="countdown">

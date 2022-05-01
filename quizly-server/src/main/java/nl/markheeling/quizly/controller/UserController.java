@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping("/user/update")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest,
-            @CurrentUser UserPrincipal currentUser)  {
+            @CurrentUser UserPrincipal currentUser) {
 
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", currentUser.getId()));
@@ -50,13 +50,12 @@ public class UserController {
 
         userRepository.save(user);
 
-        
         return ResponseEntity.ok(new ApiResponse(true, "User updated successfully"));
 
     }
 
     @GetMapping("/user/me/profile-picture")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')") 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<String> getProfilePicture(@CurrentUser UserPrincipal currentUser) {
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", currentUser.getId()));

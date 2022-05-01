@@ -21,8 +21,9 @@ export default function QuizSettings() {
             max="15"
             step="1"
             value={seconds}
-            onChange={(e) => (setSeconds(e.target.value))}
-          />{seconds}
+            onChange={(e) => setSeconds(e.target.value)}
+          />
+          {seconds}
         </div>
       </div>
       <div className="start-round">

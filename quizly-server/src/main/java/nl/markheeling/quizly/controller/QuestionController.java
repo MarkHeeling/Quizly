@@ -35,19 +35,22 @@ public class QuestionController {
         @PreAuthorize("hasAnyRole('USER','ADMIN')")
         public List<Question> getQuestions() {
                 return questionRepository.findAll();
-        } 
+        }
 
         @GetMapping("/{id}")
         public Question getQuestion(@PathVariable(value = "id") Long id) {
                 return questionRepository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
+                                .orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
         }
 
         @PostMapping("/newQuestion")
         @PreAuthorize("hasAnyRole('USER','ADMIN')")
-        public ResponseEntity<?> newQuestion(@Valid @RequestBody CreateQuestionRequest createQuestionRequest, @CurrentUser UserPrincipal currentUser) {
-                Question result = new Question(createQuestionRequest.getQuestion(), createQuestionRequest.getCorrect_answer(),
-                createQuestionRequest.getIncorrect_answer(), currentUser.getUsername(), createQuestionRequest.getCategory());
+        public ResponseEntity<?> newQuestion(@Valid @RequestBody CreateQuestionRequest createQuestionRequest,
+                        @CurrentUser UserPrincipal currentUser) {
+                Question result = new Question(createQuestionRequest.getQuestion(),
+                                createQuestionRequest.getCorrect_answer(),
+                                createQuestionRequest.getIncorrect_answer(), currentUser.getUsername(),
+                                createQuestionRequest.getCategory());
 
                 Question newQuestion = questionRepository.save(result);
 
@@ -62,7 +65,7 @@ public class QuestionController {
         @PreAuthorize("hasAnyRole('USER','ADMIN')")
         public ResponseEntity<?> deleteQuestion(@PathVariable(value = "id") Long id) {
                 Question question = questionRepository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
+                                .orElseThrow(() -> new ResourceNotFoundException("Question", "id", id));
 
                 questionRepository.delete(question);
 

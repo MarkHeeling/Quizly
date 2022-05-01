@@ -48,7 +48,7 @@ export default function Categories() {
 
   return (
     <>
-      <h3>Categorieen (Max 3)</h3>
+      <h3>Categorieen [Work in progress]</h3>
       <div className="categories">
         {categories.map((category) => {
           const categoryStyle = selectedCategories.includes(category.id)

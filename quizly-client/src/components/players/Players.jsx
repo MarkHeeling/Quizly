@@ -9,6 +9,7 @@ export default function Players() {
   const [players, setPlayers] = useState([]);
   const [totalPlayers, setTotalPlayers] = useState(null);
   const [playerName, setPlayerName] = useState("");
+  const [playerAdded, setPlayerAdded] = useState(true);
 
   const addPlayer = (e) => {
     e.preventDefault();
@@ -25,6 +26,14 @@ export default function Players() {
       setTotalPlayers(totalPlayers + 1);
       setPlayerName("");
     }
+
+    if(totalPlayers < 1) {
+      setPlayerAdded(false)
+    }
+
+    if(totalPlayers > 1) {
+      setPlayerAdded(true)
+    }
   };
 
   const deletePlayer = (id) => {
@@ -32,6 +41,13 @@ export default function Players() {
     const newPlayers = array.filter((player) => player.id !== id);
     setPlayers(newPlayers);
     setTotalPlayers(totalPlayers - 1);
+    if(totalPlayers < 1) {
+      setPlayerAdded(false)
+    }
+
+    if(totalPlayers > 1) {
+      setPlayerAdded(true)
+    }
   };
 
   return (
@@ -41,7 +57,7 @@ export default function Players() {
           <form>
             <input
               type="text"
-              placeholder="Vul een naam in..."
+              placeholder="Voeg minimaal 1 speler toe"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
             />
@@ -69,6 +85,7 @@ export default function Players() {
         <button
           className="button button-start"
           onClick={() => addPlayers(players)}
+          disabled={playerAdded}
         >
           Volgende
         </button>

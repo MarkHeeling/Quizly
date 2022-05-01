@@ -44,10 +44,8 @@ export default function ProfilePicture() {
           </div>
         </div>
         {apiSucces && (
-            <div className="succ-message-container">
-              Foto succesvol geupload.
-            </div>
-          )}
+          <div className="succ-message-container">Foto succesvol geupload.</div>
+        )}
         <div className="form-submit">
           <button className="button form-button">Uploaden</button>
         </div>
