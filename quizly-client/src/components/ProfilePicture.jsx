@@ -1,5 +1,4 @@
-// import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { uploadFile } from "../network/user";
 
@@ -13,7 +12,6 @@ export default function ProfilePicture() {
 
   const onSubmit = (data) => {
     const image = data.image[0];
-    console.log(image)
     let formData = new FormData();
     formData.append("file", image);
     uploadFile(formData).then(

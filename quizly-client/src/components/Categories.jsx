@@ -1,12 +1,12 @@
 import React from "react";
-import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
 import { QuizContext } from "../context/QuizContext";
-import { getQuestionPacks } from "../network/trivia";
 
 export default function Categories() {
   const { addCategories } = useContext(QuizContext);
+
+  // Door tijdsgebrek heb ik deze gegevens er hard coded in gezet.
   const [categories, setCategories] = useState([
     {
       id: 1,
@@ -34,17 +34,6 @@ export default function Categories() {
     },
   ]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-
-  // useEffect(() => {
-  //   getQuestionPacks().then(
-  //     function (response) {
-  //       setCategories(response.data);
-  //     },
-  //     (error) => {
-  //       console.error(error);
-  //     }
-  //   );
-  // }, []);
 
   const handleSelectCategory = (categoryId) => {
     if (selectedCategories.includes(categoryId)) {

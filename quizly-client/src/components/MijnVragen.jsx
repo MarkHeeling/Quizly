@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import Modal from "react-modal";
-import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
+import { HiOutlineTrash } from "react-icons/hi";
 import {
   getQuestions,
   deleteQuestion,
   createQuestion,
-  getQuestion,
 } from "../network/trivia";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,9 +17,8 @@ export default function Users() {
     formState: { errors },
   } = useForm();
   const [questions, setQuestions] = useState([]);
-  const [question, setQuestion] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [questionId, setQuestionId] = useState();
+  const [succes, setSucces] = useState(false);
 
   useEffect(() => {
     getQuestions().then(
@@ -31,22 +29,9 @@ export default function Users() {
         console.error(error);
       }
     );
-    getQuestion(questionId).then(
-      function (response) {
-        setQuestion(response.data);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }, [modalIsOpen]);
+  }, [succes]);
 
-  useEffect(() => {
-    reset(question);
-  }, [questions, reset]);
-
-  function openModal(id) {
-    setQuestionId(id);
+  function openModal() {
     setIsOpen(true);
   }
 
@@ -55,9 +40,10 @@ export default function Users() {
   }
 
   const handleDeleteQuestion = (id) => {
+    setSucces(false);
     deleteQuestion(id).then(
-      function (response) {
-        setQuestion(response.data);
+      function () {
+        setSucces(true);
       },
       (error) => {
         console.error(error);
@@ -66,10 +52,10 @@ export default function Users() {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setSucces(false);
     createQuestion(data).then(
-      function (response) {
-        setQuestions([...questions, response.data]);
+      function () {
+        setSucces(true);
         setIsOpen(false);
       },
       (error) => {
@@ -95,7 +81,7 @@ export default function Users() {
         <tbody>
           {questions.map((question) => {
             return (
-              <tr key={question.id}>
+              <tr key={question.id + question.category}>
                 <td>{question.question}</td>
                 <td>{question.category}</td>
                 <td className="table-actions">
@@ -116,6 +102,7 @@ export default function Users() {
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
           shouldCloseOnOverlayClick={true}
+          ariaHideApp={false}
           contentLabel="Add question"
         >
           <div className="container">
@@ -157,7 +144,6 @@ export default function Users() {
                       <option value="Kunst">Kunst</option>
                       <option value="Entertainment">Entertainment</option>
                       <option value="Wetenschap">Wetenschap</option>
-
                     </select>
                   </div>
                   {errors.category && (

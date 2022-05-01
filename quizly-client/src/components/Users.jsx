@@ -3,7 +3,6 @@ import Modal from "react-modal";
 import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
 import { deleteUser, getAllUsers } from "../network/user";
 import { useState } from "react";
-import UpdateUser from "./UpdateUser";
 
 export default function Users() {
   const [users, setUsers] = React.useState([]);
@@ -61,12 +60,6 @@ export default function Users() {
                 <td>{user.email}</td>
                 <td className="table-actions">
                   <button
-                    onClick={() => openModal(user.id)}
-                    className="table-button edit"
-                  >
-                    <HiOutlinePencilAlt size={25} />
-                  </button>
-                  <button
                     onClick={() => handleDeleteUser(user.id)}
                     className="table-button delete"
                   >
@@ -78,23 +71,6 @@ export default function Users() {
           })}
         </tbody>
       </table>
-      <div>
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          shouldCloseOnOverlayClick={true}
-          contentLabel="Update Modal"
-        >
-          <div className="container">
-            <div className="close-modal">
-              <button className="button close-button" onClick={closeModal}>
-                X
-              </button>
-            </div>
-            <UpdateUser userId={userId} />
-          </div>
-        </Modal>
-      </div>
     </div>
   );
 }
